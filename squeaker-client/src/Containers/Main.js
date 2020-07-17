@@ -4,28 +4,35 @@ import {connect} from "react-redux";
 import Homepage from "../Components/Homepage";
 import AuthForm from "../Components/AuthForm";
 import {authUser} from "../store/actions/auth";
+import {removeError} from "../store/actions/errors";
 
 const Main = props => {
-    const {authUser} = props;
+    const {authUser, errors, removeError, currentUser} = props;
     return (
         <div className="container">
             <Switch>
-                <Route exact path="/" render={props => <Homepage {...props}/>} />
+                <Route exact path="/" render={props =>
+                    <Homepage {...props}
+                        currentUser={currentUser} />} />
                 <Route exact path="/signin" render={props => {
                     return (
                         <AuthForm {...props}
                             onAuth={authUser}
+                            removeError={removeError}
                             buttonText="Log in"
-                            heading="Welcome Back."/>
+                            heading="Welcome Back."
+                            errors={errors}/>
                     );
                 }} />
                 <Route exact path="/signup" render={props => {
                     return (
                         <AuthForm {...props}
                               onAuth={authUser}
+                              removeError={removeError}
                               buttonText="Sign me up!"
                               heading="Join Squeaker today."
-                              signUp/>
+                              signUp
+                              errors={errors}/>
                     );
                 }} />
             </Switch>
@@ -35,8 +42,9 @@ const Main = props => {
 
 const mapStateToProps = state => {
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        errors: state.errors
     }
 }
 
-export default withRouter(connect(mapStateToProps, {authUser})(Main));
+export default withRouter(connect(mapStateToProps, {authUser, removeError})(Main));

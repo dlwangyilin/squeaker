@@ -20,21 +20,31 @@ class AuthForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const authType = this.props.signUp ? "signup" : "signin";
+        // 在书签1的位置，这个函数被调用，内部函数完成后，这里的then被传递给1位置的resolve执行
         this.props.onAuth(authType, this.state)
             .then(() => {
-                console.log("logged in");
+                this.props.history.push("/");
+            })
+            .catch(() => {
+                return;
             })
     }
 
     render() {
         const {email, username, password, profileImageUrl} = this.state;
-        const {heading, buttonText, signUp} = this.props;
+        const {heading, buttonText, signUp, errors, history, removeError} = this.props;
+        history.listen(() => {
+            removeError();
+        })
+
         return (
             <div>
                 <div className="row justify-content-md-center text-center">
                     <div className="col-md-6">
                         <form onSubmit={this.handleSubmit}>
                             <h2>{heading}</h2>
+                            {errors.message &&
+                                <div className="alert alert-danger">{errors.message}</div>}
                             <label htmlFor="email">Email:</label>
                             <input
                                 className="form-control"
