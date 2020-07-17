@@ -20,13 +20,15 @@ class AuthForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const authType = this.props.signUp ? "signup" : "signin";
-        // 在书签1的位置，这个函数被调用，内部函数完成后，这里的then被传递给1位置的resolve执行
+        console.log("1. In AuthForm and entering auth.js");
         this.props.onAuth(authType, this.state)
-            .then(() => {
+            .then((fakeLog) => {
                 this.props.history.push("/");
+                console.log("6.authUser done in authUser-THEN and back in AuthForm. We did it");
+                console.log(fakeLog);
             })
             .catch(() => {
-                return;
+
             })
     }
 

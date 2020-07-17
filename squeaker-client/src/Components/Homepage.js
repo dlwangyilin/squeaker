@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import MessageTimeline from './MssageTimeline';
 
 const Homepage = ({currentUser}) => {
     if (!currentUser.isAuthenticated) {
@@ -13,7 +14,7 @@ const Homepage = ({currentUser}) => {
     } else {
         return (
             <div>
-                You made it.
+                <MessageTimeline />
             </div>
         );
     }
